@@ -14,7 +14,7 @@ Overview
 
 This is a plugin (aka extension) for the 
 [Google Chrome](https://www.google.com/intl/en/chrome/browser/) browser to
-support development with (ComponentJS)[http://componentjs.com/],
+support development with [ComponentJS](http://componentjs.com/),
 the powerful Component System for hierarchically structuring the
 User-Interface (UI) dialogs of complex HTML5-based Rich Clients (aka
 Single-Page-Apps).
@@ -22,7 +22,7 @@ Single-Page-Apps).
 Installation
 ------------
 
-1. Download and install Google Chrome:<br/>
+1. Download and install Google Chrome:
    https://www.google.com/intl/en/chrome/browser/
 
 2. Open the extension page by going to the URL "chrome://extensions"
