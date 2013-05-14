@@ -33,10 +33,15 @@ Installation
 5. You find the functionality once you open the "Google Chrome Inspector"
    (for instance via "Menu > Tools > Developer Tools") on the tab "ComponentJS".
 
+See Also
+--------
+
+http://developer.chrome.com/extensions/
+
 License
 -------
 
-Copyright (c) 2013 Ralf S. Engelschall <http://engelschall.com>
+Copyright (c) 2013 Ralf S. Engelschall (http://engelschall.com)
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
