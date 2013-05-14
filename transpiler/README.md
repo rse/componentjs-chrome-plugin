@@ -1,5 +1,5 @@
 
-This is a transpiler (source-to-source translator/compiler)
+This is a transpiler (source-to-source translating compiler)
 which reads JavaScript, wraps all "function" constructs with
 "ComponentJS.fn()" calls and outputs the resulting (and otherwise
 fully unaltered) JavaScript code. This translation is necessary to
