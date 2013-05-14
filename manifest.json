@@ -1,0 +1,38 @@
+{
+    "manifest_version": 2,
+    "name":           "ComponentJS",
+    "description":    "Google Chrome Extension for ComponentJS Debugging Support",
+    "homepage_url":   "http://componentjs.com/",
+    "version":        "0.0.0",
+    "minimum_chrome_version": "26.0",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' chrome-extension://; object-src 'self'",
+    "icons": {
+        "128": "icon-128x128.png",
+        "48":  "icon-48x48.png" 
+    },
+    "permissions": [
+        "alarms",
+        "tabs",
+        "webNavigation",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "background": {
+        "page": "background.html",
+        "persistent": false
+    },
+    "devtools_page": "devtools.html",
+    "browser_action": {
+        "default_title": "ComponentJS",
+        "default_icon": {
+            "19": "icon-19x19.png",
+            "38": "icon-38x38.png"
+        },
+        "default_popup": "popup.html"
+    },
+    "web_accessible_resources": [
+        "component.plugin.tracing.js",
+        "component.plugin.tracing-console.js",
+        "component.plugin.tracing-chrome.js"
+    ]
+}
