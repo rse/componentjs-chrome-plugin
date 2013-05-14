@@ -24,16 +24,12 @@ Installation
 
 1. Download and install Google Chrome:
    https://www.google.com/intl/en/chrome/browser/
-
 2. Open the extension page by going to the URL "chrome://extensions"
    or by manually entering it via "Menu > Tools > Extensions"<br/>
-
 3. Ensure that the "Developer Mode" checkbox in the top right-hand corner is checked.
-
 4. Click "Load unpacked extension..." at the top left-hand corner and use the 
    file-selection dialog to locate and select the directory of this
    extension (the directory where this README file is located).
-   
 5. You find the functionality once you open the "Google Chrome Inspector"
    (for instance via "Menu > Tools > Developer Tools") on the tab "ComponentJS".
 
