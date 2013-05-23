@@ -7,11 +7,8 @@
 **  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-chrome.extension.onRequest.addListener(function(request) {
-    if (request.command !== 'sendToConsole')
-        return;
-    chrome.tabs.executeScript(request.tabId, {
-        code: "("+ tab_log + ")('" + request.args + "');",
-    });
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.command === 'sendToConsole') {
+        console.log(request.args);
+    }
 });
-
