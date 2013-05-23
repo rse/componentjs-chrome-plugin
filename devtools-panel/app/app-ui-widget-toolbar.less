@@ -1,0 +1,70 @@
+/*
+**  ComponentJS -- Component System for JavaScript <http://componentjs.com>
+**  Copyright (c) 2009-2013 Ralf S. Engelschall <http://engelschall.com>
+**
+**  This Source Code Form is subject to the terms of the Mozilla Public
+**  License, v. 2.0. If a copy of the MPL was not distributed with this
+**  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+.widget-toolbar {
+    .widget-toolbar-style;
+}
+
+.widget-toolbar-style (
+    @color-canvas-bg: #e0e0e0;
+    @color-tab-bg:    #f8f8f8;
+    @color-tab-fg:    #000000;
+    @font-size:       12px;
+) {
+    width:            100%;
+    border-bottom:    1px solid darken(@color-canvas-bg, 20%);
+    background:       linear-gradient(to bottom, lighten(@color-canvas-bg, 2%) 0%, darken(@color-canvas-bg, 2%) 100%);
+    color:            @color-tab-fg;
+    text-align:       left;
+
+    .items {
+        height:       (@font-size + 4 + 10);
+        display:      block;
+        margin:       0px;
+        padding:      4px 0px 0px 2px;
+
+        .item {
+            display:                 inline-block;
+            margin:                  0px 2px 0px 0px;
+            height:                  (@font-size - 1);
+            font-size:               @font-size;
+            position:                relative;
+        }
+
+        .toolbar-button {
+            border-radius:           6px;
+            background-color:        darken(@color-tab-bg, 5%);
+            padding:                 4px 16px 6px 16px;
+            border-top:              1px solid darken(@color-tab-bg, 20%);
+            border-left:             1px solid darken(@color-tab-bg, 20%);
+            border-right:            1px solid darken(@color-tab-bg, 50%);
+            border-bottom:           1px solid darken(@color-tab-bg, 50%);
+            color:                   lighten(@color-tab-fg, 40%);
+            cursor:                  pointer;
+            -webkit-user-select:     none;
+            user-select:             none;
+        }
+
+        .toolbar-button:active {
+            top:                     1px;
+        }
+
+        .toolbar-input {
+            bottom:                  11px;
+        }
+
+        .toolbar-text {
+            bottom:                  8px;
+        }
+
+        .toolbar-checkbox {
+            bottom:                  8px;
+        }
+    }
+}
