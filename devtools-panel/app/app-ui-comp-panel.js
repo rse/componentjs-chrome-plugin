@@ -39,4 +39,3 @@ app.ui.comp.panel = cs.clazz({
         }
     }
 })
-
