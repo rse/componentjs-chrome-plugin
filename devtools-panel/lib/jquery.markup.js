@@ -1,5 +1,5 @@
-/*
-**  jquery.markup.js -- jQuery Template Based Markup Generation
+/*!
+**  jQuery Markup -- jQuery Template Based Markup Generation
 **  Copyright (c) 2013 Ralf S. Engelschall <rse@engelschall.com>
 **
 **  Permission is hereby granted, free of charge, to any person obtaining
@@ -22,7 +22,9 @@
 **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/* global jQuery: true */
 (function ($) {
+    /* jshint -W014 */
 
     /*  the storage of all markup expansion functions  */
     var markup = {};
@@ -35,7 +37,7 @@
                 var el = $.markup(id, data);
                 $(this).append(el);
                 result = el;
-            })
+            });
             return result;
         }
     });
@@ -48,11 +50,12 @@
     };
 
     /*  plugin version number  */
-    $.markup.version = "1.0.0";
+    $.markup.version = "1.0.5";
 
     /*  debug level  */
     $.markup.debug = 0;
     var debug = function (level, msg) {
+        /* global console: true */
         if (   $.markup.debug >= level
             && typeof console !== "undefined"
             && typeof console.log === "function")
@@ -77,12 +80,19 @@
         debug(1, "compile: type=" + type + " id=" + id);
         debug(4, "compile: txt=" + esctxt(txt));
 
+        /*  sanity check usage  */
         if (typeof registry[type] === "undefined")
             throw new Error("jquery: markup: ERROR: no template language registered under id '" + type + "'");
         if (!registry[type].available())
             throw new Error("jquery: markup: ERROR: template language '" +
                 type + "' (" + registry[type].name + ", " + registry[type].url + ") " +
                 "known but not found under run-time");
+
+        /*  remove all leading and trailing whitespaces
+            (as usually one wants a single DOM element back without any surrounding text elements!)  */
+        txt = txt.replace(/^\s+/, "").replace(/\s+$/, "");
+
+        /*  compile with registered template engine  */
         markup[id] = registry[type].compile(txt);
     };
 
@@ -172,6 +182,7 @@
     };
 
     /*  automatically process all <link> tags  */
+    /* global document: true */
     $(document).ready(function () {
         debug(1, "ready: processing all <link> tags");
         $("head > link").each(function () {
@@ -192,6 +203,7 @@
 
     /*  helper function for checking that a function is available  */
     var isfn = function (path) {
+        /* global window: true */
         var p = path.split(/\./);
         var o = window;
         for (var i = 0; i < p.length; i++) {
@@ -209,7 +221,7 @@
         name:      "Plain HTML",
         url:       "-",
         available: function ()    { return true; },
-        compile:   function (txt) { return function (data) { return txt; }; }
+        compile:   function (txt) { return function (/* data */) { return txt; }; }
     });
 
     /*  Handlebars (efficient: pre-compilation, complete: data support)  */
@@ -218,7 +230,16 @@
         name:      "Handlebars",
         url:       "http://handlebarsjs.com/",
         available: function ()    { return isfn("Handlebars.compile"); },
-        compile:   function (txt) { return Handlebars.compile(txt); }
+        compile:   function (txt) { /* global Handlebars: true */ return Handlebars.compile(txt); }
+    });
+
+    /*  Emblem (indented Handlebars) (efficient: pre-compilation, complete: data support)  */
+    $.markup.register({
+        id:        "emblem",
+        name:      "Emblem",
+        url:       "http://emblemjs.com/",
+        available: function ()    { return isfn("Handlebars") && isfn("Emblem.compile"); },
+        compile:   function (txt) { /* global Emblem: true */ return Emblem.compile(Handlebars, txt); }
     });
 
     /*  DUST (efficient: pre-compilation, complete: data support)  */
@@ -227,7 +248,7 @@
         name:      "DUST",
         url:       "http://akdubya.github.io/dustjs/",
         available: function ()    { return isfn("dust.compile"); },
-        compile:   function (txt) { return dust.compile(txt); }
+        compile:   function (txt) { /* global dust: true */ return dust.compile(txt); }
     });
 
     /*  Jade (efficient: pre-compilation, complete: data support)  */
@@ -236,7 +257,7 @@
         name:      "Jade",
         url:       "http://jade-lang.com/",
         available: function ()    { return isfn("jade.compile"); },
-        compile:   function (txt) { return jade.compile(txt); }
+        compile:   function (txt) { /* global jade: true */ return jade.compile(txt); }
     });
 
     /*  Mustache (efficient: pre-compilation, complete: data support)  */
@@ -245,7 +266,25 @@
         name:      "Mustache",
         url:       "http://mustache.github.io/",
         available: function ()    { return isfn("Mustache.compile"); },
-        compile:   function (txt) { return Mustache.compile(txt); }
+        compile:   function (txt) { /* global Mustache: true */ return Mustache.compile(txt); }
+    });
+
+    /*  HAML-JS (efficient: pre-compilation, complete: data support)  */
+    $.markup.register({
+        id:        "haml",
+        name:      "HAML-JS",
+        url:       "https://github.com/creationix/haml-js",
+        available: function ()    { return isfn("Haml"); },
+        compile:   function (txt) { /* global Haml: true */ return Haml(txt); }
+    });
+
+    /*  Underscore Template (efficient: pre-compilation, complete: data support)  */
+    $.markup.register({
+        id:        "underscore",
+        name:      "Underscore Template",
+        url:       "http://underscorejs.org/",
+        available: function ()    { return isfn("_.template"); },
+        compile:   function (txt) { /* global _: true */ return _.template(txt); }
     });
 
     /*  Markup.js (inefficient: on-the-fly compilation, complete: data support)  */
@@ -254,7 +293,7 @@
         name:      "Markup.js",
         url:       "https://github.com/adammark/Markup.js/",
         available: function ()    { return isfn("Mark.up"); },
-        compile:   function (txt) { return function (data) { return Mark.up(txt, data) }; }
+        compile:   function (txt) { return function (data) { /* global Mark: true */ return Mark.up(txt, data); }; }
     });
 
     /*  Emmet markup (inefficient: on-the-fly compilation, incomplete: no data support)  */
@@ -263,7 +302,7 @@
         name:      "Markup.js",
         url:       "http://emmet.io/",
         available: function ()    { return isfn("emmet.expandAbbreviation"); },
-        compile:   function (txt) { return function (data) { return emmet.expandAbbreviation(txt) }; }
+        compile:   function (txt) { return function (/* data */) { /* global emmet: true */ return emmet.expandAbbreviation(txt); }; }
     });
 
 })(jQuery);
