@@ -42,8 +42,8 @@ app.ui.widget.panel.view = cs.clazz({
                     /*  remove potentially still existing tabs  */
                     var i
                     if (tab2socket.length > 0) {
-                        $(".tabs > *", self.ui).remove()
-                        $(".content > *", self.ui).remove()
+                        $(".tabs > *", ui).remove()
+                        $(".content > *", ui).remove()
                         for (i = 0; i < tab2socket.length; i++)
                             cs(self).unsocket(tab2socket[i])
                         tab2socket = []
@@ -51,8 +51,8 @@ app.ui.widget.panel.view = cs.clazz({
 
                     /*  render new tabs  */
                     for (i = 0; i < tabs.length; i++) {
-                        var tab = $(".tabs", self.ui).markup("widget-panel/tab", { i: i, name: tabs[i].name })
-                        var content = $(".content", self.ui).markup("widget-panel/content")
+                        var tab = $(".tabs", ui).markup("widget-panel/tab", { i: i, name: tabs[i].name })
+                        var content = $(".contents", ui).markup("widget-panel/content")
                         var id = cs(self).socket({ scope: tabs[i].id, ctx: $(content), type: "jquery" })
                         tab2socket.push(id)
                     }
@@ -71,10 +71,10 @@ app.ui.widget.panel.view = cs.clazz({
                 func: function (ev, active) {
                     if (active > cs(self).value("data:tabs").length)
                         throw new Error("invalid tab number to activate")
-                    $(".tabs .tab.active", self.ui).removeClass("active")
-                    $(".tabs .tab", self.ui).eq(active).addClass("active")
-                    $(".contents .content.active", self.ui).removeClass("active")
-                    $(".contents .content", self.ui).eq(active).addClass("active")
+                    $(".tabs .tab.active", ui).removeClass("active")
+                    $(".tabs .tab", ui).eq(active).addClass("active")
+                    $(".contents .content.active", ui).removeClass("active")
+                    $(".contents .content", ui).eq(active).addClass("active")
                 }
             })
 
