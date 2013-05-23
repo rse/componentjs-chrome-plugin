@@ -20,7 +20,7 @@
     width:            100%;
     border-top:       1px solid lighten(@color-canvas-bg, 20%);
     border-bottom:    1px solid darken(@color-canvas-bg, 20%);
-    background:       linear-gradient(to bottom, lighten(@color-canvas-bg, 2%) 0%, darken(@color-canvas-bg, 2%) 100%);
+    /* background:       linear-gradient(to bottom, lighten(@color-canvas-bg, 2%) 0%, darken(@color-canvas-bg, 2%) 100%); */
     color:            @color-tab-fg;
     text-align:       center;
 
@@ -61,8 +61,9 @@
 
     .contents {
         .content {
-            height:  100px;
-            display: none;
+            height:     100px;
+            display:    none;
+            border-top: 1px solid darken(@color-tab-bg, 20%);
 
             &.active {
                 background-color: @color-tab-bg;
