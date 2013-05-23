@@ -7,17 +7,20 @@
 **  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-chrome.devtools.panels.create("ComponentJS", "icon-19x19.png", "devtools-panel/index.html", function(panel) {
-    panel.onShown.addListener(function(panel_window) {
-        console.log("ComponentJS: tracing: panel show")
-    })
-    panel.onHide.addListener(function(panel_window) {
-        console.log("ComponentJS: tracing: panel hide")
-    })
-    return panel
-})
+var console = {
+    log: function (message) {
+        chrome.runtime.sendMessage({ command: "sendToConsole", args: message });
+    }
+};
 
-chrome.devtools.panels.elements.createSidebarPane("ComponentJS", function(sidebar) {
+chrome.devtools.panels.create("ComponentJS", "icon-19x19.png", "devtools-panel/index.html", function (panel) {
+    panel.onShown.addListener(function (panel_window) {
+        console.log("ComponentJS: tracing: panel show");
+    });
+    return panel;
+});
+
+/*chrome.devtools.panels.elements.createSidebarPane("ComponentJS", function(sidebar) {
     sidebar.setPage("devtools-sidebar.html")
     sidebar.setHeight("8ex")
     sidebar.onShown.addListener(function(panel_window) {
@@ -27,17 +30,8 @@ chrome.devtools.panels.elements.createSidebarPane("ComponentJS", function(sideba
         console.log("ComponentJS: tracing: sidebar hide")
     })
     return sidebar
-})
+})*/
 
-/*
-chrome.extension.sendRequest({
-    command: "sendToConsole",
-    tabId: chrome.devtools.tabId,
-    args: escape(JSON.stringify(Array.prototype.slice.call(arguments, 0)))
+chrome.devtools.inspectedWindow.onResourceAdded.addListener(function (resource) {
+    console.log("ComponentJS: tracing: onResourceAdded");
 });
-*/
-
-chrome.devtools.inspectedWindow.onResourceAdded.addListener(function(resource) {
-    console.log("ComponentJS: tracing: onResourceAdded")
-})
-
