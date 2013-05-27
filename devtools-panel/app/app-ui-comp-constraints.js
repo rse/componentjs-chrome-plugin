@@ -11,7 +11,7 @@ app.ui.comp.constraints = cs.clazz({
     mixin: [ cs.marker.controller ],
     protos: {
         create: function () {
-            cs(this).create('model/toolbar', app.ui.widget.panel.toolbar.model, app.ui.widget.panel.toolbar.view)
+            cs(this).create('toolbarModel/view', app.ui.widget.toolbar.model, app.ui.widget.toolbar.view)
 
             cs(this).model({
                 'event:record'  : { value: false, valid: 'boolean', autoreset: true },
@@ -39,14 +39,15 @@ app.ui.comp.constraints = cs.clazz({
                 type: 'button'
             }]
 
-            cs(this, 'model').value('data:items', toolbarItems)
+            cs(this, 'toolbarModel').value('data:items', toolbarItems)
         },
         render: function () {
             var content = $.markup("constraints-content")
             var self = this
 
             cs(self).socket({
-                ctx: content
+                scope: 'toolbarModel/view',
+                ctx: $('.toolbar', content)
             })
 
             cs(self).plug(content)
