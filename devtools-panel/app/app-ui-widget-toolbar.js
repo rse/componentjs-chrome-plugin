@@ -15,7 +15,7 @@ app.ui.widget.toolbar.model = cs.clazz({
         create: function () {
             /*  presentation model for items  */
             cs(this).model({
-                "data:items"    : { value: [], valid: 'any' } //FIXME
+                "data:items"    : { value: [], valid: '[(any | {source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any})*]' }
             })
         }
     }
@@ -34,8 +34,7 @@ app.ui.widget.toolbar.view = cs.clazz({
             cs(self).plug(content)
 
             cs(self).socket({
-                ctx: $('.items', content),
-                type: 'standard'
+                ctx: $('.items', content)
             })
 
             cs(self).observe({
@@ -66,6 +65,7 @@ app.ui.widget.toolbar.view = cs.clazz({
             })
         },
         release: function () {
+            cs(this).unspool('rendered')
         }
     }
 })
