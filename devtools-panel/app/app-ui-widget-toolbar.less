@@ -17,30 +17,34 @@
     @color-tab-fg:    #000000;
     @font-size:       12px;
 ) {
+    height:           100%;
     width:            100%;
     border-bottom:    1px solid darken(@color-canvas-bg, 20%);
-    background:       linear-gradient(to bottom, lighten(@color-canvas-bg, 2%) 0%, darken(@color-canvas-bg, 2%) 100%);
+    background-color: @color-tab-bg;
     color:            @color-tab-fg;
     text-align:       left;
 
     .items {
-        height:       (@font-size + 4 + 10);
+        height:       ~"calc(100% - 1px)";
         display:      block;
-        margin:       0px;
-        padding:      4px 0px 0px 2px;
+        padding:      6px 0px 0px 0px;
+        list-style-type:none;
+        margin:       0px 0px 0px 0px;
 
         .item {
-            display:                 inline-block;
-            margin:                  0px 2px 0px 0px;
-            height:                  (@font-size - 1);
+            display:                 inline;
+            margin:                  0px 0px 0px 2px;
+            height:                  100%;
             font-size:               @font-size;
             position:                relative;
         }
 
         .toolbar-button {
+            margin:                  3px 0px 3px 2px;
+            padding:                 2px 16px 2px 16px;
             border-radius:           6px;
+            height:                  (@font-size + 2 + 2);
             background-color:        darken(@color-tab-bg, 5%);
-            padding:                 4px 16px 6px 16px;
             border-top:              1px solid darken(@color-tab-bg, 20%);
             border-left:             1px solid darken(@color-tab-bg, 20%);
             border-right:            1px solid darken(@color-tab-bg, 50%);
@@ -48,7 +52,6 @@
             color:                   lighten(@color-tab-fg, 40%);
             cursor:                  pointer;
             -webkit-user-select:     none;
-            user-select:             none;
         }
 
         .toolbar-button:active {
@@ -56,15 +59,23 @@
         }
 
         .toolbar-input {
-            bottom:                  11px;
+
+            .textfield {
+                margin:                  0px;
+                vertical-align:          top;
+            }
         }
 
         .toolbar-text {
-            bottom:                  8px;
+            -webkit-user-select:     none;
         }
 
         .toolbar-checkbox {
-            bottom:                  8px;
+            
+            .checkbox {
+                margin:              0px;
+                vertical-align:      top;
+            }
         }
     }
 }
