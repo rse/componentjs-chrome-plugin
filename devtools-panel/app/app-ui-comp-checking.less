@@ -15,10 +15,35 @@
 	height: 100%;
 
 	.toolbar {
-		height: 31px;
+		height: 27px;
 	}
 
-	.grid {
-		height: ~"calc(100% - 31px)";
+	.layout {
+		height: ~"calc(100% - 27px)";
+
+		.grid {
+			top: 1px;
+			position: relative;
+			height: ~"calc(100% - 1px)";
+			width: 33.3%;
+			float: left;
+		}
+
+		.rationales {
+			top: 1px;
+			position: relative;
+			height: ~"calc(100% - 1px)";
+			width: 33.3%;
+			float: left;
+		}
+
+		.tuple-details-container {
+			top: 1px;
+			position: relative;
+			height: ~"calc(100% - 1px)";
+			width: 33.3%;
+			float: left;
+		}
 	}
+
 }
