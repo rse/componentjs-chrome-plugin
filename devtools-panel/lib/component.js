@@ -663,7 +663,7 @@
                 ast = this.parse_hash(token);
             else if (symbol === "[")
                 ast = this.parse_array(token);
-            else if (symbol.match(/^(?:undefined|boolean|number|string|function|object)$/))
+            else if (symbol.match(/^(?:null|undefined|boolean|number|string|function|object)$/))
                 ast = this.parse_primary(token);
             else if (symbol.match(/^(?:clazz|trait|component)$/))
                 ast = this.parse_special(token);
@@ -738,7 +738,7 @@
         /*  parse primary type specification  */
         parse_primary: function (token) {
             var primary = token.peek();
-            if (!primary.match(/^(?:undefined|boolean|number|string|function|object)$/))
+            if (!primary.match(/^(?:null|undefined|boolean|number|string|function|object)$/))
                 throw new Error("parse error: invalid primary type \"" + primary + "\"");
             token.skip();
             return { type: "primary", name: primary };
@@ -913,7 +913,7 @@
 
         /*  validate standard JavaScript type  */
         exec_primary: function (value, node) {
-            return (typeof value === node.name);
+            return (node.name === "null" && value === null) || (typeof value === node.name);
         },
 
         /*  validate custom JavaScript type  */
@@ -3562,7 +3562,7 @@
                         }
                         if (!$cs.validate(model[name].value, model[name].valid))
                             throw _cs.exception("model", "model field \"" + name + "\" has " +
-                                "default value \"" + model[name].value + "\", which does not validate " +
+                                "default value " + _cs.json(model[name].value) + ", which does not validate " +
                                 "against validation \"" + model[name].valid + "\"");
                     }
                 }
@@ -3679,8 +3679,9 @@
 
                     /*  check validity of new value  */
                     if (!$cs.validate(value_new, model[params.name].valid))
-                        throw _cs.exception("value", "invalid value \"" + value_new +
-                            "\" for model field \"" + params.name + "\"");
+                        throw _cs.exception("value", "model field \"" + params.name + "\" receives " +
+                            "new value " + _cs.json(value_new) + ", which does not validate " +
+                            "against validation \"" + model[params.name].valid + "\"");
 
                     /*  send event to observers for value set operation and allow observers
                         to reject value set operation and/or change new value to set  */
