@@ -11,7 +11,8 @@ app.ui.comp.tracing = cs.clazz({
     mixin: [ cs.marker.controller ],
     protos: {
         create: function () {
-            cs(this).create('model/toolbar', app.ui.widget.panel.toolbar.model, app.ui.widget.panel.toolbar.view)
+            cs(this).create('toolbarModel/view', app.ui.widget.toolbar.model, app.ui.widget.toolbar.view)
+            cs(this).create('gridModel/view', app.ui.widget.grid.model, app.ui.widget.grid.view)
 
             cs(this).model({
                 'event:record'  : { value: false, valid: 'boolean', autoreset: true },
@@ -48,14 +49,26 @@ app.ui.comp.tracing = cs.clazz({
                 data: 'data:filter'
             }]
 
-            cs(this, 'model').value('data:items', toolbarItems)
+            cs(this, 'toolbarModel').value('data:items', toolbarItems)
+
+            var columns = ['Time', 'Source', 'ST', 'Origin', 'OT', 'Operation', 'Parameters']
+            var rows = [['A','B','C','D','E','F','G']]
+
+            cs(this, 'gridModel').value('data:columns', columns)
+            cs(this, 'gridModel').value('data:rows', rows)
         },
         render: function () {
-            var content = $.markup("tracing-content")
             var self = this
+            var content = $.markup("tracing-content")
 
             cs(self).socket({
-                ctx: content
+                scope: 'toolbarModel/view',
+                ctx: $('.toolbar', content)
+            })
+
+            cs(self).socket({
+                scope: 'gridModel/view',
+                ctx: $('.grid', content)
             })
 
             cs(self).plug(content)
