@@ -89,16 +89,22 @@ app.ui.widget.toolbar.items.text = cs.clazz({
 app.ui.widget.toolbar.items.checkbox = cs.clazz({
     mixin: [ cs.marker.view ],
     dynamics: {
-        label: null
+        label: null,
+        dataBinding: null
     },
-    cons: function (label) {
+    cons: function (label, binding) {
         this.label =  label
+        this.dataBinding = binding
     },
     protos: {
         create: function () {
             var self = this
 
             var btn = $.markup("toolbar-checkbox", { id: Date.now(), label: self.label })
+
+            $('input[type=checkbox]', btn).click(function () {
+                cs(self).value(self.dataBinding, $('input[type=checkbox]', btn).is(':checked'))
+            })
 
             cs(self).plug(btn);
         },
