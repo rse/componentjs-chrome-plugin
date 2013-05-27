@@ -13,6 +13,7 @@ app.ui.comp.checking = cs.clazz({
         create: function () {
             cs(this).create('toolbarModel/view', app.ui.widget.toolbar.model, app.ui.widget.toolbar.view)
             cs(this).create('gridModel/view', app.ui.widget.grid.model, app.ui.widget.grid.view)
+            cs(this).create('detailsModel/view', app.ui.widget.tuple.details.model, app.ui.widget.tuple.details.view)
 
             cs(this).model({
                 'event:clear'           : { value: false, valid: 'boolean', autoreset: true },
@@ -55,6 +56,11 @@ app.ui.comp.checking = cs.clazz({
             cs(self).socket({
                 scope: 'gridModel/view',
                 ctx: $('.grid', content)
+            })
+
+            cs(self).socket({
+                scope: 'detailsModel/view',
+                ctx: $('.tuple-details-container', content)
             })
 
             cs(self).plug(content)
