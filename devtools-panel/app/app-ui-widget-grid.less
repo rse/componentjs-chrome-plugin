@@ -19,7 +19,31 @@
 ) {
     .table {
         width:100%;
-        /*border:1px solid #000000;*/
+        table-layout: fixed;
+    }
+
+    .traces-body, .traces-head {
+
+        .thead th, .tbody td {
+            width: ~"calc(100% / 7)";
+            text-align:center;
+            overflow: hidden;
+            border-width: 1px;
+            border-style: outset;
+            border-color: #000000;
+        }
+    }
+
+    .traces-head {
+        .thead {
+            background-color: darken(@color-tab-bg, 15%);
+            position:relative;
+            top:0px;
+        }
+
+        .thead th {
+            height:10px;
+        }
     }
     
     .traces-body {
@@ -28,36 +52,12 @@
 
         .tbody {
             color:#000000;
-            text-align:center;
             height:50px;
             margin:0px;
         }
 
         .tbody td {
             height:20px;
-            width:100px;
-            border-width: 1px;
-            border-style: outset;
-            border-color: #000000;
-        }
-    }
-
-    .traces-head {
-
-        .thead {
-            background-color: darken(@color-tab-bg, 15%);
-            text-align:center;
-            position:relative;
-            top:0px;
-        }
-
-        .thead th {
-            height:10px;
-            width:120px;
-            text-align:center;
-            border-width: 1px;
-            border-style: outset;
-            border-color: #000000;
         }
     }
 }
