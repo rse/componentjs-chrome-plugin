@@ -7,9 +7,9 @@
 **  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-cs.ns("app.ui.widget.panel.toolbar")
+cs.ns("app.ui.widget.toolbar")
 
-app.ui.widget.panel.toolbar.model = cs.clazz({
+app.ui.widget.toolbar.model = cs.clazz({
     mixin: [ cs.marker.model ],
     protos: {
         create: function () {
@@ -22,7 +22,7 @@ app.ui.widget.panel.toolbar.model = cs.clazz({
 })
 
 /*  widget view  */
-app.ui.widget.panel.toolbar.view = cs.clazz({
+app.ui.widget.toolbar.view = cs.clazz({
     mixin: [ cs.marker.view ],
     protos: {
         render: function () {
@@ -55,7 +55,7 @@ app.ui.widget.panel.toolbar.view = cs.clazz({
                             var text =  new app.ui.widget.toolbar.items.text(item.label)
                             cs(self).create('text-' + i, text)
                         } else if (item.type === 'checkbox') {
-                            var checkbox =  new app.ui.widget.toolbar.items.checkbox(item.label)
+                            var checkbox =  new app.ui.widget.toolbar.items.checkbox(item.label, item.data)
                             cs(self).create('checkbox-' + i, checkbox)
                         }
                         else {
