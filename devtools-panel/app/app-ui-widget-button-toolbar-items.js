@@ -41,10 +41,12 @@ app.ui.widget.toolbar.items.button = cs.clazz({
 app.ui.widget.toolbar.items.input = cs.clazz({
     mixin: [ cs.marker.view ],
     dynamics: {
-        dataBinding: null
+        dataBinding: null,
+        eventBinding: null
     },
-    cons: function (dataBinding) {
+    cons: function (dataBinding, eventBinding) {
         this.dataBinding = dataBinding
+        this.eventBinding = eventBinding
     },
     protos: {
         create: function () {
@@ -53,12 +55,27 @@ app.ui.widget.toolbar.items.input = cs.clazz({
             var btn = $.markup("toolbar-input")
 
             $('input[type=text]', btn).keyup(function (event) {
-                cs(self).value(self.dataBinding, event.target.value)
+                if (event.keyCode === 13) {
+                    cs(self).value(self.dataBinding, event.target.value)
+                }
+            })
+
+            $('input[type=text]', btn).keyup(function (event) {
+                cs(self).value(self.eventBinding, event.keyCode)
+            })
+
+            cs(self).observe({
+                name: self.dataBinding, spool: 'created',
+                touch: true,
+                func: function (ev, nVal) {
+                    $('input[type=text]', btn).val(nVal)
+                }
             })
 
             cs(self).plug(btn);
         },
-        release: function () {
+        destroy: function () {
+            cs(this).unspool('created')
         }
     }
 })
