@@ -15,7 +15,7 @@
             <thead class="thead">
                 <tr class="row">
                     <markup id="column">
-                        <th>{{label}}</th>
+                        <th style="{{style}}">{{label}}</th>
                     </markup>
                 </tr>
             </thead>
@@ -25,9 +25,9 @@
         <table class="table">
             <tbody class="tbody">
                 <markup id="row">
-                    <tr class="row">
+                    <tr class="row" data-i="{{i}}">
                         <markup id="data">
-                            <td>{{label}}</td>
+                            <td  style="{{style}}">{{label}}</td>
                         </markup>
                     </tr>
                 </markup>

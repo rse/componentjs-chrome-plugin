@@ -20,21 +20,42 @@
     .table {
         width:100%;
         table-layout: fixed;
+        border-collapse: collapse;
     }
 
     .traces-body, .traces-head {
 
         .thead th, .tbody td {
-            width: ~"calc(100% / 7)";
-            text-align:center;
-            overflow: hidden;
-            border-width: 1px;
-            border-style: outset;
-            border-color: #000000;
+            text-align  : center;
+            overflow    : hidden;
+            border      : 1px solid darken(@color-canvas-bg, 20%);
+        }
+
+        .tbody td {
+            padding: 0px 0px 0px 2px;
+            text-align  : left;
+            white-space: nowrap;
+        }
+
+        tr:first-child th {
+            border-top  : 0px;
+        }
+
+        tr:last-child td {
+            border-bottom: 0px;
+        }
+
+        tr td:first-child, tr th:first-child {
+            border-left: 0px;
+        }
+
+        tr td:last-child, tr th:last-child {
+            border-right: 0px;
         }
     }
 
     .traces-head {
+
         .thead {
             background-color: darken(@color-tab-bg, 15%);
             position:relative;
@@ -43,12 +64,26 @@
 
         .thead th {
             height:10px;
+            -webkit-user-select:     none;
+            user-select:             none;
         }
     }
     
     .traces-body {
-        height: ~"calc(100% - 19px)";
+        height: ~"calc(100% - 18px)";
         overflow-y: scroll;
+
+        tr:first-child td {
+            border-top: 0px;
+        }
+
+        .selectable {
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: darken(@color-tab-bg, 5%);
+        }
 
         .tbody {
             color:#000000;
