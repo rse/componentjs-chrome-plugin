@@ -14,6 +14,7 @@ app.ui.comp.checking = cs.clazz({
             cs(this).create('toolbarModel/view', app.ui.widget.toolbar.model, app.ui.widget.toolbar.view)
             cs(this).create('gridModel/view', app.ui.widget.grid.model, app.ui.widget.grid.view)
             cs(this).create('detailsModel/view', app.ui.widget.tuple.details.model, app.ui.widget.tuple.details.view)
+            cs(this).create('rationalesModel/view', app.ui.widget.rationales.model, app.ui.widget.rationales.view)
 
             cs(this).model({
                 'event:clear'           : { value: false, valid: 'boolean', autoreset: true },
@@ -26,20 +27,27 @@ app.ui.comp.checking = cs.clazz({
                 label: 'Clear',
                 event: 'event:clear',
                 type: 'button'
-            }, {
-                label: 'Check Journal',
-                event: 'event:check-journal',
-                type: 'button'
-            }, {
-                label: 'Continuous check',
-                data: 'data:continuous',
-                type: 'checkbox'
             }]
 
             cs(this, 'toolbarModel').value('data:items', toolbarItems)
 
-            var columns = ['Time', 'Source', 'ST', 'Origin', 'OT', 'Operation', 'Parameters']
-            var rows = [['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G'],['A','B','C','D','E','F','G']]
+            var columns = [
+                { label: 'Time', dataIndex: 'time' },
+                { label: 'Source', dataIndex: 'source' },
+                { label: 'ST', dataIndex: 'sourceType' },
+                { label: 'Origin', dataIndex: 'origin' },
+                { label: 'OT', dataIndex: 'originType' },
+                { label: 'Operation', dataIndex: 'operation' }
+            ]
+            var rows = [
+                { time: 1, source: 'A1', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A2', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A3', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A4', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A5', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A6', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
+                { time: 1, source: 'A7', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } }
+            ]
 
             cs(this, 'gridModel').value('data:columns', columns)
             cs(this, 'gridModel').value('data:rows', rows)
@@ -56,6 +64,11 @@ app.ui.comp.checking = cs.clazz({
             cs(self).socket({
                 scope: 'gridModel/view',
                 ctx: $('.grid', content)
+            })
+
+            cs(self).socket({
+                scope: 'rationalesModel/view',
+                ctx: $('.rationales-container', content)
             })
 
             cs(self).socket({
@@ -82,7 +95,24 @@ app.ui.comp.checking = cs.clazz({
             cs(self).observe({
                 name: 'event:clear', spool: 'rendered',
                 func: function () {
-                    console.log('clear now')
+                    cs(this, 'gridModel').value('data:rows', [])
+                    cs(self, 'rationalesModel').value('data:rationales', [])
+                }
+            })
+
+            cs(self, 'gridModel').observe({
+                name: 'data:selected-obj', spool: '..:rendered',
+                touch: true,
+                func: function (ev, nVal) {
+                    cs(self, 'detailsModel').value('data:tuple', nVal)
+                    cs(self, 'rationalesModel').value('data:tuple', nVal)
+
+                    //TODO - get the correct rationales
+                    var rationales = [
+                        { title: 'view-call-foo', rationale: 'Content blaa' },
+                        { title: 'view-call', rationale: 'Content fooo' }
+                    ]
+                    cs(self, 'rationalesModel').value('data:rationales', rationales)
                 }
             })
         },
