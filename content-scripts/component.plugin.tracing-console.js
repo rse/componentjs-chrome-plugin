@@ -64,6 +64,7 @@ ComponentJS.plugin("tracing-console", function (_cs, $cs, GLOBAL) {
             /*  print the tracing tuple to the console  */
             GLOBAL.console.log("TRACING: " +
                 "#" + tracing.id + ": < " +
+                tracing.timestamp() + ", " +
                 source + ", " +
                 sourceType + ", " +
                 origin + ", " +
