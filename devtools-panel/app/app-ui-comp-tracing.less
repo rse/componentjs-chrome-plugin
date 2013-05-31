@@ -11,7 +11,12 @@
 	.tracing-content-style;	
 }
 
-.tracing-content-style () {
+.tracing-content-style (
+    @color-canvas-bg: #e0e0e0;
+    @color-tab-bg:    #f8f8f8;
+    @color-tab-fg:    #000000;
+    @font-size:       12px;
+) {
 	height: 100%;
 
 	.toolbar {
@@ -19,6 +24,9 @@
 	}
 
 	.grid {
-		height: ~"calc(100% - 27px)";
+	    height:           ~"calc(100% - 29px)";
+	    border-bottom:    1px solid darken(@color-canvas-bg, 20%);
+		position: relative;
+		top: 1px;
 	}
 }

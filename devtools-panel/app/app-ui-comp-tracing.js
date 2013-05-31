@@ -11,15 +11,18 @@ app.ui.comp.tracing = cs.clazz({
     mixin: [ cs.marker.controller ],
     protos: {
         create: function () {
+            var gridView = new app.ui.widget.grid.view(false)
             cs(this).create('toolbarModel/view', app.ui.widget.toolbar.model, app.ui.widget.toolbar.view)
-            cs(this).create('gridModel/view', app.ui.widget.grid.model, app.ui.widget.grid.view)
+            cs(this).create('gridModel/view', app.ui.widget.grid.model, gridView)
 
             cs(this).model({
-                'event:record'  : { value: false, valid: 'boolean', autoreset: true },
-                'event:load'    : { value: false, valid: 'boolean', autoreset: true },
-                'event:save'    : { value: false, valid: 'boolean', autoreset: true },
-                'event:clear'   : { value: false, valid: 'boolean', autoreset: true },
-                'data:filter'   : { value: '', valid: 'string' }
+                'event:record'      : { value: false, valid: 'boolean', autoreset: true },
+                'event:load'        : { value: false, valid: 'boolean', autoreset: true },
+                'event:save'        : { value: false, valid: 'boolean', autoreset: true },
+                'event:clear'       : { value: false, valid: 'boolean', autoreset: true },
+                'event:filterKeyUp' : { value: -1, valid: 'number', autoreset: true },
+                'data:continuous'   : { value: false, valid: 'boolean' },
+                'data:filter'       : { value: '', valid: 'string' }
             })
         },
         prepare: function () {
@@ -40,22 +43,37 @@ app.ui.comp.tracing = cs.clazz({
                 event: 'event:clear',
                 type: 'button'
             }, {
+                label: 'Check Journal',
+                event: 'event:check-journal',
+                type: 'button'
+            }, {
+                label: 'Check continuously',
+                data: 'data:continuous',
+                type: 'checkbox'
+            }, {
                 type: 'fill'
             }, {
                 label: 'Filter:',
                 type: 'text'
             }, {
                 type: 'input',
-                data: 'data:filter'
+                data: 'data:filter',
+                event: 'event:filterKeyUp'
             }]
 
             cs(this, 'toolbarModel').value('data:items', toolbarItems)
 
-            var columns = ['Time', 'Source', 'ST', 'Origin', 'OT', 'Operation', 'Parameters']
-            var rows = [['A','B','C','D','E','F','G']]
+            var columns = [
+                { label: 'Time', dataIndex: 'time', width: 50, align: 'center' },
+                { label: 'Source', dataIndex: 'source' },
+                { label: 'ST', dataIndex: 'sourceType', width: 50, align: 'center' },
+                { label: 'Origin', dataIndex: 'origin' },
+                { label: 'OT', dataIndex: 'originType', width: 50, align: 'center' },
+                { label: 'Operation', dataIndex: 'operation', width: 100, align: 'center' },
+                { label: 'Parameters', dataIndex: 'parameters' }
+            ]
 
             cs(this, 'gridModel').value('data:columns', columns)
-            cs(this, 'gridModel').value('data:rows', rows)
         },
         render: function () {
             var self = this
@@ -73,10 +91,30 @@ app.ui.comp.tracing = cs.clazz({
 
             cs(self).plug(content)
 
+            $('#tracing_upload').change(function (evt) {
+                var files = evt.target.files;
+
+                for (var i = 0, f; f = files[i]; i++) {
+                    var reader = new FileReader()
+                    reader.onload = (function () {
+                        return function (e) {
+                            var content = e.target.result.split('\n')
+                            tupleParser.parseLog(content, function (tuples) {
+                                cs(self, 'gridModel').value('data:rows', tuples, true)
+                                tuples = [{ time: 1, source: 'string', sourceType: 'string', origin: 'string', originType: 'string', operation: 'string', parameters: 'any' }]
+                            })
+                        }
+                    })(f)
+
+                    reader.readAsText(f)
+                    $('#tracing_upload').val('')
+                }
+            })
+
             cs(self).observe({
                 name: 'data:filter', spool: 'rendered',
-                func: function (ev, nVal, oVal) {
-                    console.log('new: ' + nVal + ', old: ' + oVal)
+                func: function (ev, nVal) {
+                    cs(self, 'gridModel').value('state:filter', nVal)
                 }
             })
 
@@ -90,21 +128,37 @@ app.ui.comp.tracing = cs.clazz({
             cs(self).observe({
                 name: 'event:load', spool: 'rendered',
                 func: function () {
-                    console.log('load now')
+                    $('#tracing_upload').trigger('click')
                 }
             })
 
             cs(self).observe({
                 name: 'event:save', spool: 'rendered',
                 func: function () {
-                    console.log('save now')
+                    window.location = 'data:application/octet-stream;base64,' + btoa(cs(self, 'gridModel').value('data:savable'))
                 }
             })
 
             cs(self).observe({
                 name: 'event:clear', spool: 'rendered',
                 func: function () {
-                    console.log('clear now')
+                    cs(this, 'gridModel').value('data:rows', [])
+                }
+            })
+
+            cs(self).observe({
+                name: 'data:continuous', spool: 'rendered',
+                func: function (ev, nVal, oVal) {
+                    console.log('nVal: ' + nVal + ', oVal:' + oVal)
+                }
+            })
+
+            cs(self).observe({
+                name: 'event:filterKeyUp', spool: 'rendered',
+                func: function (ev, nVal) {
+                    if (nVal === 27) {
+                        cs(self).value('data:filter', '')
+                    }
                 }
             })
         },
