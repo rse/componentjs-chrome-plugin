@@ -15,7 +15,7 @@ app.ui.widget.tuple.details.model = cs.clazz({
         create: function () {
             /*  presentation model for items  */
             cs(this).model({
-                "data:tuple"  : { value: null, valid: '(null | {source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any})' }
+                "data:tuple"  : { value: null, valid: '(null | {time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any})' }
             })
         }
     }
@@ -30,26 +30,26 @@ app.ui.widget.tuple.details.view = cs.clazz({
 
             cs(self).plug(details)
 
-            cs(self).value('data:tuple', {
-                source: 'testS',
-                sourceType: 'testST',
-                origin: 'testO',
-                originType: 'testOT',
-                operation: 'op',
-                parameters: { test: 'test' }
-            })
-
             cs(self).observe({
                 name: 'data:tuple', spool: 'rendered',
                 touch: true,
                 func: function (ev, nVal) {
                     if (nVal !== null) {
+                        $('.time', details).text(nVal.time)
                         $('.source', details).text(nVal.source)
                         $('.source-type', details).text(nVal.sourceType)
                         $('.origin', details).text(nVal.origin)
                         $('.origin-type', details).text(nVal.originType)
                         $('.operation', details).text(nVal.operation)
                         $('.parameters', details).text(JSON.stringify(nVal.parameters))
+                    } else {
+                        $('.time', details).text('')
+                        $('.source', details).text('')
+                        $('.source-type', details).text('')
+                        $('.origin', details).text('')
+                        $('.origin-type', details).text('')
+                        $('.operation', details).text('')
+                        $('.parameters', details).text('')
                     }
                 }
             })
