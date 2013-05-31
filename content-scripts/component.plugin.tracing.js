@@ -18,6 +18,7 @@
 /* jshint unused:false */
 
 ComponentJS.plugin("tracing", function (_cs, $cs, GLOBAL) {
+    var startTime = Date.now();
     /*  ensure run-time requirements are met  */
     if (typeof Error.captureStackTrace !== "function")
         throw _cs.exception("plugin:tracing", "sorry, Google Chrome V8's Error.captureStackTrace() is required");
@@ -43,6 +44,7 @@ ComponentJS.plugin("tracing", function (_cs, $cs, GLOBAL) {
             },
             dynamics: {
                 usage:      0,
+                timestamp:  mkattr("timestamp",  null),
                 source:     mkattr("source",     null),
                 sourceType: mkattr("sourceType", null),
                 origin:     mkattr("origin",     null),
@@ -60,6 +62,7 @@ ComponentJS.plugin("tracing", function (_cs, $cs, GLOBAL) {
                         &&  this.operation()  !== null
                         &&  this.parameters() !== null) {
                         this.usage++;
+                        this.timestamp = Date.now() - startTime;
                         _cs.hook("ComponentJS:tracing", "none", this);
                     }
                 }
