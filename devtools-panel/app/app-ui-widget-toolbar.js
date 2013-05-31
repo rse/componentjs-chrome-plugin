@@ -47,7 +47,7 @@ app.ui.widget.toolbar.view = cs.clazz({
                             cs(self).create('button-' + i, btn)
                         }
                         else if (item.type === 'input') {
-                            var input =  new app.ui.widget.toolbar.items.input(item.data)
+                            var input =  new app.ui.widget.toolbar.items.input(item.data, item.event)
                             cs(self).create('input-' + i, input)
                         }
                         else if (item.type === 'text') {
