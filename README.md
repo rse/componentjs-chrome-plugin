@@ -37,14 +37,14 @@ Structure
 ---------
 
 - manifest.json
-  - icon-\*.png
-  - popup.html
-    - popup.js
-  - devtools.html
-    - devtools.js
-      - devtools-panel/index.html
-  - background.html
-    - background.js
+    - icon-\*.png
+    - popup.html
+        - popup.js
+    - devtools.html
+        - devtools.js
+            - devtools-panel/index.html
+    - background.html
+        - background.js
 
 See Also
 --------
