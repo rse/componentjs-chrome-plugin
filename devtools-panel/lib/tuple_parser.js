@@ -1,3 +1,6 @@
+
+(function () {
+
 var pattern = /^< ([^,]*), ([^,]*), ([^,]*), ([^,]*), ([^,]*), ([^,]*), (.*) >/;
 
 var tokens =  function () { return {
@@ -89,6 +92,8 @@ var parseLog = function (lines, callback) {
     callback(tuples);
 };
 
+window.tupleParser = {};
+window.tupleParser.parseLog = parseLog;
 
-tupleParser = {};
-tupleParser.parseLog = parseLog;
+})();
+
