@@ -33,6 +33,19 @@ Installation
 5. You find the functionality once you open the "Google Chrome Inspector"
    (for instance via "Menu > Tools > Developer Tools") on the tab "ComponentJS".
 
+Structure
+---------
+
+- manifest.json
+  - icon-\*.png
+  - popup.html
+    - popup.js
+  - devtools.html
+    - devtools.js
+      - devtools-panel/index.html
+  - background.html
+    - background.js
+
 See Also
 --------
 
