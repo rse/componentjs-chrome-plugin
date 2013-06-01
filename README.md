@@ -36,7 +36,8 @@ Installation
 See Also
 --------
 
-http://developer.chrome.com/extensions/
+- http://developer.chrome.com/extensions/
+- chrome://extensions/
 
 License
 -------
