@@ -8,7 +8,7 @@
 */
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.command === 'sendToConsole') {
+    if (request.command === "sendToConsole")
         console.log(request.args);
-    }
 });
+

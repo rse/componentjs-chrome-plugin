@@ -12,6 +12,12 @@ var console = {
         chrome.runtime.sendMessage({ command: "sendToConsole", args: message });
     }
 };
+/*
+ * chrome.experimental.devtools.console.addMessage(
+ *     chrome.experimental.devtools.console.Severity.Warning,
+ *     "Info"
+ * );
+ */
 
 chrome.devtools.panels.create("ComponentJS", "icon-19x19.png", "devtools-panel/index.html", function (panel) {
     panel.onShown.addListener(function (panel_window) {
@@ -32,6 +38,18 @@ chrome.devtools.panels.create("ComponentJS", "icon-19x19.png", "devtools-panel/i
     return sidebar
 })*/
 
-chrome.devtools.inspectedWindow.onResourceAdded.addListener(function (resource) {
-    console.log("ComponentJS: tracing: onResourceAdded");
+chrome.devtools.inspectedWindow.getResources(function (resources) {
+    console.log("ComponentJS: tracing: getResources!");
+    for (var i = 0; i < resources.length; i++)
+        console.log("ComponentJS: tracing: getResources: " + resources[i].url);
 });
+chrome.devtools.inspectedWindow.onResourceAdded.addListener(function (resource) {
+    console.log("ComponentJS: tracing: onResourceAdded: " + resource.url);
+});
+chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function (resource, content) {
+    console.log("ComponentJS: tracing: onResourceContentCommitted: " + resource.url);
+});
+chrome.devtools.network.onNavigated.addListener(function() {
+    console.log("ComponentJS: tracing: onNavigated");
+});
+
