@@ -58,19 +58,21 @@ var constraintChecker = function () {
             }
             if (run.checks.length === 0) {
                 this.unclassified++;
-                console.log('# There is no rule that catches this tuple');
-                return;
+                run.result = 'UNCLASSIFIED';
+                //console.log('# There is no rule that catches this tuple');
             }
             else if (run.result === 'PASS') {
                 this.passed++;
-                console.log('[-] Tuple ' + this.stringifyTuple(tuple) + ' is allowed');
+                //console.log('[-] Tuple ' + this.stringifyTuple(tuple) + ' is allowed');
             }
             else if (run.result === 'FAIL') {
                 this.failed++;
-                console.log('[x] Tuple ' + this.stringifyTuple(tuple) + ' forbidden');
-                this.printReason(run.checks);
+                //console.log('[x] Tuple ' + this.stringifyTuple(tuple) + ' forbidden');
             }
-            return run;
+            tuple.result = run.result;
+            tuple.checks = run.checks;
+
+            return tuple;
         },
         printReason: function (checks, depth) {
             depth = depth || 0;
