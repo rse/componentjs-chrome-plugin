@@ -22,8 +22,8 @@ app.ui.widget.grid.model = cs.clazz({
                 'state:filter'      : { value: '', valid: 'string' },
                 'data:selected-obj' : { value: null, valid: 'object' },
                 'data:savable'      : { value: '', valid: 'string' },
-                'data:filtered'     : { value: [], valid: '[{ time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any }*]' },
-                'data:rows'         : { value: [], valid: '[{ time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any }*]' }
+                'data:filtered'     : { value: [], valid: '[{ time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any, result?: string, checks?: any }*]' },
+                'data:rows'         : { value: [], valid: '[{ time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any, result?: string, checks?: any }*]' }
             })
 
             cs(self).observe({
