@@ -14,23 +14,23 @@ app.sv = cs.clazz({
             var self = this
 
             cs(self).register('parseLogfile', function (content, callback) {
-                tupleParser.parseLog(content, function (tuples) {
+                window.tupleParser.parseLog(content, function (tuples) {
                     callback(tuples)
                 })
             })
 
-            cs(self).register('parseConstraintset', function (content, callback) {
+            cs(self).register('parseConstraintset', function (content) {
                 try {
-                    var constraintSet = constraint_parser.parse(content)
-                    callback({
+                    var constraintSet = window.constraint_parser.parse(content)
+                    return {
                         success: true,
                         constraints: constraintSet
-                    })
+                    }
                 } catch (err) {
-                    callback({
+                    return {
                         success: false,
                         error: err
-                    })
+                    }
                 }
             })
         }
