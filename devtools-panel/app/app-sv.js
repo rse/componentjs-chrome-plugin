@@ -33,6 +33,19 @@ app.sv = cs.clazz({
                     }
                 }
             })
+
+            cs(self).register('checkTuples', function (tuples, constraintSet) {
+                var resTuples = []
+
+                for (var i = 0; i < tuples.length; i++) {
+                    var tuple = window.constraintChecker.checkTuple(constraintSet, tuples[i])
+                    if (tuple.result === 'UNCLASSIFIED' || tuple.result === 'FAIL') {
+                        resTuples.push(tuple)
+                    }
+                }
+
+                return resTuples
+            })
         }
     }
 })
