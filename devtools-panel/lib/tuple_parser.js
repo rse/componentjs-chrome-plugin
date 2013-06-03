@@ -79,7 +79,7 @@ var parseLog = function (lines, callback) {
         var param = {};
         parseObject(param, params);
         var newTuple = {
-            time: parseInt(matches[1]),
+            time: parseInt(matches[1], 10),
             source: matches[2],
             sourceType: matches[3],
             origin: matches[4],
