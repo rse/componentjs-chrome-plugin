@@ -11,7 +11,13 @@ app.sv = cs.clazz({
     mixin: [ cs.marker.service ],
     protos: {
         create: function () {
+            var self = this
+
+            cs(self).register('parseLogfile', function (content, callback) {
+                tupleParser.parseLog(content, function (tuples) {
+                    callback(tuples)
+                })
+            })
         }
     }
 })
-

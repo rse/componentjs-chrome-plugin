@@ -99,9 +99,8 @@ app.ui.comp.tracing = cs.clazz({
                     reader.onload = (function () {
                         return function (e) {
                             var content = e.target.result.split('\n')
-                            tupleParser.parseLog(content, function (tuples) {
+                            cs('/sv').call('parseLogfile', content, function (tuples) {
                                 cs(self, 'gridModel').value('data:rows', tuples, true)
-                                tuples = [{ time: 1, source: 'string', sourceType: 'string', origin: 'string', originType: 'string', operation: 'string', parameters: 'any' }]
                             })
                         }
                     })(f)
