@@ -29,9 +29,16 @@ app.ui.widget.vertical.tabs.controller = cs.clazz({
                 cs(self, 'tabsModel/view/standard').value('data:constraintset', data)
             })
 
+            cs(self).subscribe({
+                name: 'editorChanged', spool: 'rendered',
+                func: function () {
+                    cs(self).call('parseConstraintsets')
+                }
+            })
+
             cs(self).register({
                 name: 'parseConstraintsets', spool: 'rendered',
-                func: function (callback) {
+                func: function () {
                     var tabs = cs(self, 'tabsModel').value('data:tabs')
                     var constraintsets = []
 
