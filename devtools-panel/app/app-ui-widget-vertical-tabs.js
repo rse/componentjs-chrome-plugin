@@ -28,31 +28,6 @@ app.ui.widget.vertical.tabs.controller = cs.clazz({
             $.get('static/standard_rules.txt', function (data) {
                 cs(self, 'tabsModel/view/standard').value('data:constraintset', data)
             })
-        },
-        render: function () {
-            var self = this
-
-            cs(self).register({
-                name: 'saveCurrent', spool: 'rendered',
-                func: function () {
-                    var content = cs(self, 'tabsModel').value('data:savable')
-
-                    window.location = 'data:application/octet-stream;base64,' + btoa(content)
-                }
-            })
-
-            cs(self).register({
-                name: 'addConstraintset', spool: 'rendered',
-                func: function (content) {
-                    var current = cs(self, 'tabsModel').value('data:tabs')
-                    current.push({ id: 'custom_' + self.customs, name: 'Custom ' + self.customs, enabled: false })
-                    cs(self, 'tabsModel').value('data:tabs', current, true)
-                    var newCustom = cs(this, 'tabsModel/view').create('custom_' + self.customs, app.ui.widget.constraintset.model)
-                    newCustom.value('data:constraintset', content)
-                    newCustom.state('visible')
-                    self.customs++
-                }
-            })
 
             cs(self).register({
                 name: 'parseConstraintsets', spool: 'rendered',
@@ -77,6 +52,31 @@ app.ui.widget.vertical.tabs.controller = cs.clazz({
                     var sorted = window.sorter(merged)
 
                     return sorted
+                }
+            })
+        },
+        render: function () {
+            var self = this
+
+            cs(self).register({
+                name: 'saveCurrent', spool: 'rendered',
+                func: function () {
+                    var content = cs(self, 'tabsModel').value('data:savable')
+
+                    window.location = 'data:application/octet-stream;base64,' + btoa(content)
+                }
+            })
+
+            cs(self).register({
+                name: 'addConstraintset', spool: 'rendered',
+                func: function (content) {
+                    var current = cs(self, 'tabsModel').value('data:tabs')
+                    current.push({ id: 'custom_' + self.customs, name: 'Custom ' + self.customs, enabled: false })
+                    cs(self, 'tabsModel').value('data:tabs', current, true)
+                    var newCustom = cs(this, 'tabsModel/view').create('custom_' + self.customs, app.ui.widget.constraintset.model)
+                    newCustom.value('data:constraintset', content)
+                    newCustom.state('visible')
+                    self.customs++
                 }
             })
 
