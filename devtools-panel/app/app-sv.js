@@ -18,6 +18,21 @@ app.sv = cs.clazz({
                     callback(tuples)
                 })
             })
+
+            cs(self).register('parseConstraintset', function (content, callback) {
+                try {
+                    var constraintSet = constraint_parser.parse(content)
+                    callback({
+                        success: true,
+                        constraints: constraintSet
+                    })
+                } catch (err) {
+                    callback({
+                        success: false,
+                        error: err
+                    })
+                }
+            })
         }
     }
 })

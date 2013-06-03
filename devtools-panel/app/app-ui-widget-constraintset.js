@@ -58,6 +58,22 @@ app.ui.widget.constraintset.model = cs.clazz({
                     self.editor.getSession().setValue(nVal)
                 }
             })
+
+            cs(self).register({
+                name: 'displayError', spool: 'rendered',
+                func: function (error) {
+                    if (error === null) {
+                        self.editor.getSession().setAnnotations([])
+                    } else {                    
+                        self.editor.getSession().setAnnotations([{
+                          row: error.line - 1,
+                          column: error.column,
+                          text: error.message,
+                          type: 'error'
+                        }])
+                    }
+                }
+            })
         },
         release: function () {
             cs(this).unspool('rendered')

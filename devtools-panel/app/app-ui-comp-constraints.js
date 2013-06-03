@@ -17,7 +17,8 @@ app.ui.comp.constraints = cs.clazz({
                 'event:add'     : { value: false, valid: 'boolean', autoreset: true },
                 'event:remove'  : { value: false, valid: 'boolean', autoreset: true },
                 'event:load'    : { value: false, valid: 'boolean', autoreset: true },
-                'event:save'    : { value: false, valid: 'boolean', autoreset: true }
+                'event:save'    : { value: false, valid: 'boolean', autoreset: true },
+                'event:parse'   : { value: false, valid: 'boolean', autoreset: true }
             })
         },
         prepare: function () {
@@ -38,6 +39,10 @@ app.ui.comp.constraints = cs.clazz({
             }, {
                 label: 'Save',
                 event: 'event:save',
+                type: 'button'
+            }, {
+                label: 'Parse',
+                event: 'event:parse',
                 type: 'button'
             }]
 
@@ -106,6 +111,13 @@ app.ui.comp.constraints = cs.clazz({
                 name: 'event:save', spool: 'rendered',
                 func: function () {
                     cs(self, 'constraintset').call('saveCurrent')
+                }
+            })
+
+            cs(self).observe({
+                name: 'event:parse', spool: 'rendered',
+                func: function () {
+                    cs(self, 'constraintset').call('parseConstraintsets')
                 }
             })
         },

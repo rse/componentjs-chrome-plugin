@@ -55,6 +55,25 @@ app.ui.widget.vertical.tabs.controller = cs.clazz({
             })
 
             cs(self).register({
+                name: 'parseConstraintsets', spool: 'rendered',
+                func: function () {
+                    var tabs = cs(self, 'tabsModel').value('data:tabs')
+                    for (var i = 0; i < tabs.length; i++) {
+                        var tab = cs(self, 'tabsModel/view/' + tabs[i].id)
+                        var content = tab.value('data:savable')
+
+                        cs('/sv').call('parseConstraintset', content, function (result) {
+                            if (result.success) {
+                                tab.call('displayError', null)
+                            } else {
+                                tab.call('displayError', result.error)
+                            }
+                        })
+                    }
+                }
+            })
+
+            cs(self).register({
                 name: 'removeConstraintset', spool: 'rendered',
                 func: function () {
                     var tabs = cs(self, 'tabsModel').value('data:tabs')
