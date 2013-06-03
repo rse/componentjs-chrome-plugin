@@ -23,13 +23,15 @@ app.ui.comp.checking = cs.clazz({
             })
         },
         prepare: function () {
+            var self = this
+
             var toolbarItems = [{
                 label: 'Clear',
                 event: 'event:clear',
                 type: 'button'
             }]
 
-            cs(this, 'toolbarModel').value('data:items', toolbarItems)
+            cs(self, 'toolbarModel').value('data:items', toolbarItems)
 
             var columns = [
                 { label: 'Time', dataIndex: 'time' },
@@ -39,18 +41,23 @@ app.ui.comp.checking = cs.clazz({
                 { label: 'OT', dataIndex: 'originType' },
                 { label: 'Operation', dataIndex: 'operation' }
             ]
-            var rows = [
-                { time: 1, source: 'A1', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A2', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A3', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A4', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A5', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A6', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } },
-                { time: 1, source: 'A7', sourceType: 'B', origin: 'C', originType: 'D', operation: 'E', parameters: { test: 'F' } }
-            ]
 
-            cs(this, 'gridModel').value('data:columns', columns)
-            cs(this, 'gridModel').value('data:rows', rows)
+            cs(self, 'gridModel').value('data:columns', columns)
+
+            cs(self).register({
+                name: 'displayTuples', spool: 'prepared',
+                func: function (tuples) {
+                    cs(self, 'gridModel').value('data:rows', tuples)
+                }
+            })
+
+            cs(self).register({
+                name: 'displayRationales', spool: 'prepared',
+                func: function (rationales) {
+                    cs(self).value('event:clear', true)
+                    self.rationales = rationales
+                }
+            })
         },
         render: function () {
             var content = $.markup("checking-content")
@@ -95,7 +102,7 @@ app.ui.comp.checking = cs.clazz({
             cs(self).observe({
                 name: 'event:clear', spool: 'rendered',
                 func: function () {
-                    cs(this, 'gridModel').value('data:rows', [])
+                    cs(self, 'gridModel').value('data:rows', [])
                     cs(self, 'rationalesModel').value('data:rationales', [])
                 }
             })
@@ -107,12 +114,11 @@ app.ui.comp.checking = cs.clazz({
                     cs(self, 'detailsModel').value('data:tuple', nVal)
                     cs(self, 'rationalesModel').value('data:tuple', nVal)
 
-                    //TODO - get the correct rationales
-                    var rationales = [
-                        { title: 'view-call-foo', rationale: 'Content blaa' },
-                        { title: 'view-call', rationale: 'Content fooo' }
-                    ]
-                    cs(self, 'rationalesModel').value('data:rationales', rationales)
+                    if (nVal !== null) {
+                        cs(self, 'rationalesModel').value('data:rationales', nVal.checks)
+                    } else {
+                        cs(self, 'rationalesModel').value('data:rationales', [])
+                    }
                 }
             })
         },
