@@ -64,7 +64,7 @@ app.ui.widget.constraintset.model = cs.clazz({
                 func: function (error) {
                     if (error === null) {
                         self.editor.getSession().setAnnotations([])
-                    } else {                    
+                    } else {
                         self.editor.getSession().setAnnotations([{
                           row: error.line - 1,
                           column: error.column,
@@ -72,6 +72,7 @@ app.ui.widget.constraintset.model = cs.clazz({
                           type: 'error'
                         }])
                     }
+                    self.editor.focus()
                 }
             })
         },
