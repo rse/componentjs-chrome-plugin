@@ -12,7 +12,8 @@ cs.ns('app.ui.widget.vertical.tabs')
 app.ui.widget.vertical.tabs.controller = cs.clazz({
     mixin: [ cs.marker.controller ],
     dynamics: {
-        customs: 1
+        customs: 1,
+        timer: null
     },
     protos: {
         create: function () {
@@ -32,7 +33,12 @@ app.ui.widget.vertical.tabs.controller = cs.clazz({
             cs(self).subscribe({
                 name: 'editorChanged', spool: 'rendered',
                 func: function () {
-                    cs(self).call('parseConstraintsets')
+                    if (self.timer !== null) {
+                        clearTimeout(self.timer)
+                    }
+                    self.timer = setTimeout(function () {
+                        cs(self).call('parseConstraintsets')
+                    }, 1000)
                 }
             })
 
