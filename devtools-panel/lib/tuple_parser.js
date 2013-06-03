@@ -104,4 +104,3 @@ window.tupleParser = {};
 window.tupleParser.parseLog = parseLog;
 
 })();
-
