@@ -166,11 +166,11 @@ app.ui.comp.tracing = cs.clazz({
                 name: 'event:check-journal', spool: 'rendered',
                 func: function () {
                     var tuples = cs(self, 'gridModel').value('data:rows')
-                    for (var i = 0; i < tuples.length; i++) {
-                        window.constraintChecker.checkTuple(constraintSet, tuples[i]);
-                    }
+                    var constraintSet = cs(self, '../constraints').call('retrieveConstraintset')
 
-                    window.constraintChecker.displayStats();
+                    var resTuples = cs('/sv').call('checkTuples', tuples, constraintSet)
+
+                    cs(self, '../checking').call('displayTuples', resTuples)
                 }
             })
         },
