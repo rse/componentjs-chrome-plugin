@@ -16,13 +16,14 @@ app.ui.comp.tracing = cs.clazz({
             cs(this).create('gridModel/view', app.ui.widget.grid.model, gridView)
 
             cs(this).model({
-                'event:record'      : { value: false, valid: 'boolean', autoreset: true },
-                'event:load'        : { value: false, valid: 'boolean', autoreset: true },
-                'event:save'        : { value: false, valid: 'boolean', autoreset: true },
-                'event:clear'       : { value: false, valid: 'boolean', autoreset: true },
-                'event:filterKeyUp' : { value: -1, valid: 'number', autoreset: true },
-                'data:continuous'   : { value: false, valid: 'boolean' },
-                'data:filter'       : { value: '', valid: 'string' }
+                'event:record'          : { value: false, valid: 'boolean', autoreset: true },
+                'event:load'            : { value: false, valid: 'boolean', autoreset: true },
+                'event:save'            : { value: false, valid: 'boolean', autoreset: true },
+                'event:clear'           : { value: false, valid: 'boolean', autoreset: true },
+                'event:filterKeyUp'     : { value: -1, valid: 'number', autoreset: true },
+                'event:check-journal'   : { value: false, valid: 'boolean', autoreset: true },
+                'data:continuous'       : { value: false, valid: 'boolean' },
+                'data:filter'           : { value: '', valid: 'string' }
             })
         },
         prepare: function () {
@@ -158,6 +159,18 @@ app.ui.comp.tracing = cs.clazz({
                     if (nVal === 27) {
                         cs(self).value('data:filter', '')
                     }
+                }
+            })
+
+            cs(self).observe({
+                name: 'event:check-journal', spool: 'rendered',
+                func: function () {
+                    var tuples = cs(self, 'gridModel').value('data:rows')
+                    for (var i = 0; i < tuples.length; i++) {
+                        window.constraintChecker.checkTuple(constraintSet, tuples[i]);
+                    }
+
+                    window.constraintChecker.displayStats();
                 }
             })
         },
