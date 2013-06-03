@@ -15,8 +15,8 @@ app.ui.widget.rationales.model = cs.clazz({
         create: function () {
             /*  presentation model for items  */
             cs(this).model({
-                'data:tuple': { value: null, valid: '(null | {time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any})'},
-                'data:rationales' : { value: [], valid: '[{ title: string, rationale: string }*]'}
+                'data:tuple': { value: null, valid: '(null | {time: number, source: string, sourceType: string, origin: string, originType: string, operation: string, parameters: any, result: string, checks: any})'},
+                'data:rationales' : { value: [], valid: '[any*]'}
             })
         }
     }
@@ -31,17 +31,42 @@ app.ui.widget.rationales.view = cs.clazz({
 
             cs(self).plug(rationales)
 
+            var gatherRationales = function (checks, acc) {
+                for (var i = 0; i < checks.length; i++) {
+                    acc.push(checks[i].constraint)
+
+                    gatherRationales(checks[i].subs, acc)
+                }
+
+                return acc
+            }
+
             cs(self).observe({
                 name: 'data:rationales', spool: 'rendered',
                 touch: true,
                 func: function (ev, nVal) {
-                    if (nVal === null) {
+                    /*  remove existing rationales first  */
+                    $('tr', rationales).remove()
+
+                    var data = {}
+                    var checks = gatherRationales(nVal, [])
+                    /* add new rationales  */
+                    for (var i = 0; i < checks.length; i++) {
+                        var item = checks[i]
+                        data.title = item.id
+                        data.rationale = item.constraintBody.rationale
+
+                        $('.table', rationales).append($.markup('rationales/rationales-item', data))
+                    }
+
+                    var tuple = cs(self).value('data:tuple')
+                    if (tuple === null) {
                         return
                     }
-                    $('tr', rationales).remove()
-                    for (var i = 0; i < nVal.length; i++) {
-                        var item = nVal[i]
-                        $('.table', rationales).append($.markup('rationales/rationales-item', item))
+                    if (tuple.result === 'UNCLASSIFIED') {
+                        data.title = 'No constraint found, that matches this tuple'
+                        data.rationale = 'None of the given constraints conditions matched this tuple, thus no assumption about its validity could be made'
+                        $('.table', rationales).append($.markup('rationales/rationales-item', data))
                     }
                 }
             })
